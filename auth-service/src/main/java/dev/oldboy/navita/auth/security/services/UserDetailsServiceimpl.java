@@ -18,6 +18,8 @@ public class UserDetailsServiceimpl implements UserDetailsService {
   @Autowired
   private UserRepository userRepository;
   
+  private UserDetails userDetails;
+  
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Optional<User> user = userRepository.findByEmail(username);
@@ -26,6 +28,12 @@ public class UserDetailsServiceimpl implements UserDetailsService {
       throw new UsernameNotFoundException("We not found user with username/email: " + username);
     }
     
-    return user.map(UserDetailsImpl::new).get();
+    userDetails = user.map(UserDetailsImpl::new).get();
+    return userDetails;
+  }
+  
+  public Boolean validatePassword(String passWord) {
+    
+    return this.userDetails.getPassword().equals(passWord);
   }
 }
