@@ -10,13 +10,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.oldboy.navita.auth.security.dtos.RequestAuthDto;
+import dev.oldboy.navita.auth.security.services.UserDetailsServiceimpl;
 import dev.oldboy.navita.auth.shared.dtos.ResponseDto;
 import dev.oldboy.navita.auth.shared.models.ErrorDetail;
 
@@ -30,9 +31,6 @@ public class AuthController {
   @Autowired
   private UserDetailsService userDetailsService;
   
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-  
   @PostMapping("/authenticate")
   public ResponseEntity<ResponseDto> authenticate(@RequestBody RequestAuthDto request){
     ResponseDto responseDto = new ResponseDto();
@@ -41,21 +39,30 @@ public class AuthController {
       authenticationManager.authenticate(
          new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword())
       );
+      
+      UserDetailsServiceimpl userDetailsServiceImpl = (UserDetailsServiceimpl) userDetailsService;
+      
+      responseDto.setStatus(200);
+      responseDto.setMessage("Success: authorization granted");
+      responseDto.setData(userDetailsServiceImpl.generateToken());     
+      
+      return ResponseEntity.ok(responseDto);      
     }catch (BadCredentialsException e) {
       ErrorDetail error = new ErrorDetail("Bad Credentials", "Incorrect Username or password");
       List<ErrorDetail> errors = new ArrayList<>();
       errors.add(error);
       
       responseDto.setStatus(403);
-      responseDto.setMessage("See error details for more info");
+      responseDto.setMessage("Error: See error details for more info");
       responseDto.setErrors(errors);
-      System.out.println(passwordEncoder.encode(request.getPassword()));
+  
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseDto);
     }
-    
-    
-    
-    return ResponseEntity.ok(responseDto);
+  }
+  
+  @GetMapping("/test")
+  public String test() {
+    return "autorized";
   }
   
 }

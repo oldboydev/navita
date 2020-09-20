@@ -8,10 +8,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import dev.oldboy.navita.auth.security.filters.JwtRequestFilter;
 import dev.oldboy.navita.auth.security.services.UserDetailsServiceimpl;
 
 @Configuration
@@ -20,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
   
   @Autowired
   private UserDetailsServiceimpl userDetailsService;
+  
+  @Autowired
+  private JwtRequestFilter jwtRequestFilter;
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -31,7 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     http.csrf().disable()
     .authorizeRequests()
       .antMatchers("/auth/authenticate").permitAll() 
-      .anyRequest().authenticated(); 
+      .anyRequest().authenticated()
+      .and()
+      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    
+    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
   }
 
   @Override

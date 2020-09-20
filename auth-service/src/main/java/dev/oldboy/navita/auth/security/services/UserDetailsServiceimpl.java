@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import dev.oldboy.navita.auth.models.User;
 import dev.oldboy.navita.auth.repositories.UserRepository;
+import dev.oldboy.navita.auth.security.models.TokenInfo;
 import dev.oldboy.navita.auth.security.models.UserDetailsImpl;
+import dev.oldboy.navita.auth.security.utils.JwtTokenUtils;
 
 @Service
 public class UserDetailsServiceimpl implements UserDetailsService {
@@ -32,8 +34,14 @@ public class UserDetailsServiceimpl implements UserDetailsService {
     return userDetails;
   }
   
-  public Boolean validatePassword(String passWord) {
+  public TokenInfo generateToken() {
+    JwtTokenUtils jwtTokenUtils = new JwtTokenUtils();
+    TokenInfo tokenInfo = new TokenInfo();
     
-    return this.userDetails.getPassword().equals(passWord);
+    tokenInfo.setType("Bearer");
+    tokenInfo.setToken(jwtTokenUtils.generateToken(userDetails));
+    tokenInfo.setExpiresIn(jwtTokenUtils.getExpirationTime());
+    
+    return tokenInfo;
   }
 }
