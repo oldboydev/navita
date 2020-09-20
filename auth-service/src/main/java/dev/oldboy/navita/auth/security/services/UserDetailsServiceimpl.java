@@ -8,11 +8,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import dev.oldboy.navita.auth.models.User;
-import dev.oldboy.navita.auth.repositories.UserRepository;
 import dev.oldboy.navita.auth.security.models.TokenInfo;
 import dev.oldboy.navita.auth.security.models.UserDetailsImpl;
 import dev.oldboy.navita.auth.security.utils.JwtTokenUtils;
+import dev.oldboy.navita.auth.user.models.User;
+import dev.oldboy.navita.auth.user.repositories.UserRepository;
 
 @Service
 public class UserDetailsServiceimpl implements UserDetailsService {

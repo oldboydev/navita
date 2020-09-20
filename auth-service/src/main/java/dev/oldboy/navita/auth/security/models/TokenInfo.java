@@ -1,6 +1,11 @@
 package dev.oldboy.navita.auth.security.models;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "TokenInfo")
 public class TokenInfo {
+  
   private String token;
   private String type;
   private Integer expiresIn;
@@ -13,11 +18,12 @@ public class TokenInfo {
     this.type = type;
     this.expiresIn = expiresIn;
   }
-
+  
   public String getToken() {
     return token;
   }
-
+  
+  @XmlElement(name = "token")
   public void setToken(String token) {
     this.token = token;
   }
@@ -26,6 +32,7 @@ public class TokenInfo {
     return type;
   }
 
+  @XmlElement(name = "type")
   public void setType(String type) {
     this.type = type;
   }
@@ -33,7 +40,8 @@ public class TokenInfo {
   public Integer getExpiresIn() {
     return expiresIn;
   }
-
+  
+  @XmlElement(name = "expiresIn")
   public void setExpiresIn(Integer expiresIn) {
     this.expiresIn = expiresIn;
   }

@@ -1,4 +1,4 @@
-package dev.oldboy.navita.auth.models;
+package dev.oldboy.navita.auth.user.models;
 
 import java.time.LocalDateTime;
 

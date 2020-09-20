@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import dev.oldboy.navita.auth.models.User;
+import dev.oldboy.navita.auth.user.models.User;
 
 public class UserDetailsImpl implements UserDetails {
   

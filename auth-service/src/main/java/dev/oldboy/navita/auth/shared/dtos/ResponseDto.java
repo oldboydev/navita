@@ -5,18 +5,16 @@ import java.util.List;
 import dev.oldboy.navita.auth.shared.models.ErrorDetail;
 
 public class ResponseDto {
-  private Integer status;
-  private String message;
-  private Object data;
-  private List<ErrorDetail> errors;
+  protected Integer status;
+  protected String message;
+  protected List<ErrorDetail> errors;
   
   public ResponseDto() {}
 
-  public ResponseDto(Integer status, String message, Object data, List<ErrorDetail> errors) {
+  public ResponseDto(Integer status, String message, List<ErrorDetail> errors) {
     super();
     this.status = status;
     this.message = message;
-    this.data = data;
     this.errors = errors;
   }
 
@@ -36,14 +34,6 @@ public class ResponseDto {
     this.message = message;
   }
 
-  public Object getData() {
-    return data;
-  }
-
-  public void setData(Object data) {
-    this.data = data;
-  }
-
   public List<ErrorDetail> getErrors() {
     return errors;
   }
@@ -54,6 +44,6 @@ public class ResponseDto {
 
   @Override
   public String toString() {
-    return "ResponseDTO [status=" + status + ", message=" + message + ", data=" + data + ", errors=" + errors + "]";
+    return "ResponseDTO [status=" + status + ", message=" + message + ", errors=" + errors + "]";
   }
 }

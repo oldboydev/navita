@@ -2,6 +2,9 @@ package dev.oldboy.navita.auth.shared.models;
 
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ErrorDetail {
 
     private String errorType;
