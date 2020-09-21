@@ -11,10 +11,12 @@ public class AuthenticationServiceRoutes {
   @Bean
   public RouteLocator authenticationRoutes(RouteLocatorBuilder builder) {
      return builder.routes()
-         .route(r -> r.path("/roles")
-             .uri("lb://bp-user-management-service/roles")
+         .route(r -> r.path("/auth/authenticate")
+             .uri("lb://navita-auth/auth/authenticate")
              .id("auth")
+         ).route(r -> r.path("/users/**")
+             .uri("lb://navita-auth/users/**")
+             .id("users")
          ).build();  
-  }   
-  
+  }     
 }
