@@ -14,9 +14,9 @@ public class AuthenticationServiceRoutes {
          .route(r -> r.path("/auth/authenticate")
              .uri("lb://navita-auth/auth/authenticate")
              .id("auth")
-         ).route(r -> r.path("/auth/test")
-             .uri("lb://navita-auth/auth/test")
+         ).route(r -> r.path("/users/**")
+             .uri("lb://navita-auth/users/**")
+             .id("users")
          ).build();  
-  }   
-  
+  }     
 }
