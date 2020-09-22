@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     List<User> users = repository.findAll();
     
     if(users.size() == 0) {
-      throw new RuntimeException("There is no users recod");
+      throw new RuntimeException("There is no users recorded");
     }
     
     return users;
