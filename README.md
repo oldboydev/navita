@@ -79,7 +79,6 @@ method: delete
 endpoint: localhost:9090/users/user/{email}
 
 #### Parking Lot operations - must send Authorization header with token
-
 create parking lot: 
 method: post
 endpoint: localhost:9090/parking/parking-lot
@@ -114,8 +113,59 @@ endpoint: localhost:9090/parking/parking-lot/{id}
 
 get parking lot info by cnpj: 
 method: get
-endpoint: localhost:9090/parking/parking-lot/user/{cnpj}
+endpoint: localhost:9090/parking/parking-lot/cnpj/{cnpj}
 
 delete parking lot info by id: 
 method: delete
 endpoint: localhost:9090/parking/parking-lot/{id}
+
+#### Vehicle operations - must send Authorization header with token
+create vehicle: 
+type 1 --> moto | 2 --> car
+method: post
+endpoint: localhost:9090/parking/vehicles
+payload: {
+	"brand": "Chevrolet",
+  "model": "Onix",
+  "color": "Preta",
+  "plate": "122220103",
+  "type":  2
+}
+
+update vehicle:
+method: put
+endpoint: localhost:9090/parking/vehicles/{id}
+payload: {
+	"brand": "Chevrolet",
+  "model": "Onix",
+  "color": "Preta",
+  "plate": "122220103",
+  "type":  2
+}
+
+get all vehicle: 
+method: get
+endpoint: localhost:9090/parking/vehicles
+
+get vehicle info by id: 
+method: get
+endpoint: localhost:9090/parking/vehicles/{id}
+
+get vehicle info by palte: 
+method: get
+endpoint: localhost:9090/parking/vehicle/plate/{plate}
+
+delete vehicle info by id: 
+method: delete
+endpoint: localhost:9090/parking/vehicle/{id}
+
+#### Parking operations - must send Authorization header with token
+Parking / Unparking car
+type 0 --> unpark | 1 --> park
+method: post
+endpoint: localhost:9090/manager/park
+payload: {
+	"idParkingLot": 2,
+	"idVehicle": 16,
+	"idOperation": 1
+}
