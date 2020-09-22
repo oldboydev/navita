@@ -100,6 +100,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>navita-auth</finalName>
 	</build>
 
 </project>

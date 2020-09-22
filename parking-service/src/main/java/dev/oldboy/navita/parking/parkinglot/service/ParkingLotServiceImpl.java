@@ -79,7 +79,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     ParkingLot updateParkingLot = findById(id);
     
     //validate before update    
-    managerService.verifyIfCanUpdateSpaces(updateParkingLot);
+    managerService.verifyIfCanUpdateSpaces(updateParkingLot, parkingLotInfo);
     
     updateParkingLot.setName(parkingLotInfo.getName());
     updateParkingLot.setCnpj(parkingLotInfo.getCnpj());

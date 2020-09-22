@@ -1,4 +1,4 @@
-package dev.oldboy.navita.parking.parkinglot.controller;
+package dev.oldboy.navita.parking.vehicle.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,26 +19,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.oldboy.navita.parking.parkinglot.dto.RequestParkingLotDto;
-import dev.oldboy.navita.parking.parkinglot.dto.ResponseDeleteParkingLotDto;
-import dev.oldboy.navita.parking.parkinglot.dto.ResponseParkingLotDto;
 import dev.oldboy.navita.parking.parkinglot.exceptions.ParkingLotNotFoundException;
-import dev.oldboy.navita.parking.parkinglot.service.ParkingLotService;
 import dev.oldboy.navita.parking.shared.models.ErrorDetail;
+import dev.oldboy.navita.parking.vehicle.dtos.RequestVehicleDto;
+import dev.oldboy.navita.parking.vehicle.dtos.ResponseDeleteVehicleDto;
+import dev.oldboy.navita.parking.vehicle.dtos.ResponseVehicleDto;
+import dev.oldboy.navita.parking.vehicle.services.VehicleService;
 
 @RestController
-@RequestMapping(value = "/parking/parking-lot", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class ParkingLotController {
+@RequestMapping(value = "/parking/vehicles", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+public class VehicleController {
   
   @Autowired
-  private ParkingLotService service;
+  private VehicleService service;
   
-  @PostMapping()
-  public ResponseEntity<ResponseParkingLotDto> addParkingLot(@RequestBody @Validated RequestParkingLotDto requestBody){
-    ResponseParkingLotDto responseDto = new ResponseParkingLotDto();
+  @PostMapping
+  public ResponseEntity<ResponseVehicleDto> addParkingLot(@RequestBody @Validated RequestVehicleDto requestBody){
+    ResponseVehicleDto responseDto = new ResponseVehicleDto();
     
     try {
-      responseDto.setData(Arrays.asList(service.addParkingLot(requestBody)));
+      responseDto.setData(Arrays.asList(service.addVehicle(requestBody)));
       responseDto.setStatus(201);
       responseDto.setMessage("Success: parking lot created");
       
@@ -47,8 +47,8 @@ public class ParkingLotController {
       ErrorDetail error;
       
       if(e.getCause() instanceof ConstraintViolationException) {
-        if(e.getMessage().contains("uk_cnpj")){
-          error = new ErrorDetail("Unique constraint", "CNPJ: " + requestBody.getCnpj() + " is already record for another user!");
+        if(e.getMessage().contains("uk_plate")){
+          error = new ErrorDetail("Unique constraint", "Plate: " + requestBody.getPlate() + " is already record for another user!");
         }else {
           error = new ErrorDetail("Unique constraint", e.getMessage());
         }        
@@ -68,13 +68,13 @@ public class ParkingLotController {
   }
   
   @GetMapping()
-  public ResponseEntity<ResponseParkingLotDto> findAllParkingLot(){
-    ResponseParkingLotDto responseDto = new ResponseParkingLotDto();
+  public ResponseEntity<ResponseVehicleDto> findAll(){
+    ResponseVehicleDto responseDto = new ResponseVehicleDto();
     
     try {
       responseDto.setData(service.findAll());
       responseDto.setStatus(200);
-      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " parking lots.");
+      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " vehicles.");
       
       return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     } catch (Exception e) {
@@ -92,13 +92,13 @@ public class ParkingLotController {
   }
   
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseParkingLotDto> findParkingLotById(@PathVariable Long id){
-    ResponseParkingLotDto responseDto = new ResponseParkingLotDto();
+  public ResponseEntity<ResponseVehicleDto> findById(@PathVariable Long id){
+    ResponseVehicleDto responseDto = new ResponseVehicleDto();
     
     try {
       responseDto.setData(Arrays.asList(service.findById(id)));
       responseDto.setStatus(200);
-      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " parking lot.");
+      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " vehicle.");
       
       return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     } catch (Exception e) {
@@ -114,14 +114,14 @@ public class ParkingLotController {
     }
   }
   
-  @GetMapping("/cnpj/{cnpj}")
-  public ResponseEntity<ResponseParkingLotDto> findParkingLotByCnpj(@PathVariable String cnpj){
-    ResponseParkingLotDto responseDto = new ResponseParkingLotDto();
+  @GetMapping("/plate/{plate}")
+  public ResponseEntity<ResponseVehicleDto> findByPlate(@PathVariable String plate){
+    ResponseVehicleDto responseDto = new ResponseVehicleDto();
     
     try {
-      responseDto.setData(Arrays.asList(service.findByCnpf(cnpj)));
+      responseDto.setData(Arrays.asList(service.findByPlate(plate)));
       responseDto.setStatus(200);
-      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " parking lot.");
+      responseDto.setMessage("Success: found #" + responseDto.getData().size() + " vehicle.");
       
       return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     } catch (Exception e) {
@@ -138,13 +138,47 @@ public class ParkingLotController {
   }
   
   @PutMapping("/{id}")
-  public ResponseEntity<ResponseParkingLotDto> updateParkingLot(@PathVariable Long id, @RequestBody RequestParkingLotDto requestBody){
-    ResponseParkingLotDto responseDto = new ResponseParkingLotDto();
+  public ResponseEntity<ResponseVehicleDto> updateParkingLot(@PathVariable Long id, @RequestBody @Validated RequestVehicleDto requestBody){
+    ResponseVehicleDto responseDto = new ResponseVehicleDto();
     
     try {
-      responseDto.setData(Arrays.asList(service.updatePakingLot(requestBody, id)));
+      responseDto.setData(Arrays.asList(service.updateVehicle(requestBody, id)));
       responseDto.setStatus(200);
-      responseDto.setMessage("Success: update #" + responseDto.getData().size() + " parking lot.");
+      responseDto.setMessage("Success: update #" + responseDto.getData().size() + " vehicle.");
+      
+      return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    } catch (Exception e) {
+      ErrorDetail error;
+      
+      if(e.getCause() instanceof ConstraintViolationException) {
+        if(e.getMessage().contains("uk_plate")){
+          error = new ErrorDetail("Unique constraint", "Plate: " + requestBody.getPlate() + " is already record for another user!");
+        }else {
+          error = new ErrorDetail("Unique constraint", e.getMessage());
+        }        
+      }else {
+        error = new ErrorDetail("Incorrect Request", e.getMessage());
+      }
+      
+      List<ErrorDetail> errors = new ArrayList<>();
+      errors.add(error);
+      
+      responseDto.setStatus(400);
+      responseDto.setMessage("Error: See error details for more info");
+      responseDto.setErrors(errors);
+      
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+    }
+  }
+  
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ResponseDeleteVehicleDto> delete(@PathVariable Long id){
+    ResponseDeleteVehicleDto responseDto = new ResponseDeleteVehicleDto();
+    
+    try {
+      responseDto.setData(service.deleteById(id));
+      responseDto.setStatus(200);
+      responseDto.setMessage("Success: delete vehicles.");
       
       return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     } catch (Exception e) {
@@ -167,33 +201,4 @@ public class ParkingLotController {
     }
   }
   
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ResponseDeleteParkingLotDto> deleteParkingLot(@PathVariable Long id){
-    ResponseDeleteParkingLotDto responseDto = new ResponseDeleteParkingLotDto();
-    
-    try {
-      responseDto.setData(service.deleteById(id));
-      responseDto.setStatus(200);
-      responseDto.setMessage("Success: delete parking lot.");
-      
-      return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-    } catch (Exception e) {
-      ErrorDetail error;
-      
-      if(e.getCause() instanceof ParkingLotNotFoundException) {
-        error = new ErrorDetail("Record not found", e.getMessage());
-      }else {
-        error = new ErrorDetail(e.getClass().getName(), e.getMessage());
-      }
-      
-      List<ErrorDetail> errors = new ArrayList<>();
-      errors.add(error);
-      
-      responseDto.setStatus(400);
-      responseDto.setMessage("Error: See error details for more info");
-      responseDto.setErrors(errors);
-      
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
-    }
-  }
 }

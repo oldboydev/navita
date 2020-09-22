@@ -1,10 +1,7 @@
 package dev.oldboy.navita.parking.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -159,7 +156,7 @@ public class ParkingLotServiceTest {
         LocalDateTime.now()
     );
     
-    Mockito.when(managerService.verifyIfCanUpdateSpaces(Mockito.any(ParkingLot.class)))
+    Mockito.when(managerService.verifyIfCanUpdateSpaces(Mockito.any(ParkingLot.class), Mockito.any(RequestParkingLotDto.class)))
       .thenThrow(IllegalArgumentException.class);
     
     Mockito.when(repository.saveAndFlush(Mockito.any(ParkingLot.class))).thenReturn(parkingLot);

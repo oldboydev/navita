@@ -62,7 +62,7 @@ create sequence seq_id_manager increment 1 minvalue 1 maxvalue 92233720368547758
 ----------------------------
 create table navita_manager_vehicle(
   n_id_manager_vehicle int not null,
-  n_id_parking_lot int not null,
+  n_id_manager int not null,
   n_id_vehicle int not null,
   t_updated_at timestamp,
   t_created_at timestamp
