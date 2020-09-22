@@ -3,16 +3,16 @@ package dev.oldboy.navita.parking.vehicle.dtos;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class RequestVehicleLotDto {
+public class RequestVehicleDto {
   @NotBlank private String brand;
   @NotBlank private String model;
   @NotBlank private String color;
   @NotBlank private String plate;
   @NotNull private Integer type;
   
-  public RequestVehicleLotDto() {}
+  public RequestVehicleDto() {}
 
-  public RequestVehicleLotDto(@NotBlank String brand, @NotBlank String model, @NotBlank String color,
+  public RequestVehicleDto(@NotBlank String brand, @NotBlank String model, @NotBlank String color,
       @NotBlank String plate, @NotNull Integer type) {
     super();
     this.brand = brand;

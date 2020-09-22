@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.oldboy.navita.parking.vehicle.dtos.RequestVehicleLotDto;
+import dev.oldboy.navita.parking.vehicle.dtos.RequestVehicleDto;
 import dev.oldboy.navita.parking.vehicle.exceptions.VehicleNotFoundException;
 import dev.oldboy.navita.parking.vehicle.models.Vehicle;
 import dev.oldboy.navita.parking.vehicle.repositories.VehiclesRepository;
@@ -23,7 +23,7 @@ public class VehicleServiceImpl implements VehicleService {
     List<Vehicle> vehicles = repository.findAll();
     
     if(vehicles.size() == 0) {
-      throw new RuntimeException("There is no parkingLots recorded");
+      throw new VehicleNotFoundException("There is no parkingLots recorded");
     }
     
     return vehicles;
@@ -52,7 +52,7 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle addVehicle(RequestVehicleLotDto vehicleInfo) {
+  public Vehicle addVehicle(RequestVehicleDto vehicleInfo) {
     Vehicle vehicle = new Vehicle(
         null,
         vehicleInfo.getBrand(),
@@ -68,7 +68,7 @@ public class VehicleServiceImpl implements VehicleService {
   }
 
   @Override
-  public Vehicle updateVehicle(RequestVehicleLotDto vehicleInfo, Long id) {
+  public Vehicle updateVehicle(RequestVehicleDto vehicleInfo, Long id) {
     Vehicle updateVehicle = findById(id);
     
     updateVehicle.setBrand(vehicleInfo.getBrand());

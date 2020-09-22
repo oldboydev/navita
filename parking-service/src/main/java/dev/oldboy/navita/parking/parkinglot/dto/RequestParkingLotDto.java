@@ -13,6 +13,19 @@ public class RequestParkingLotDto{
   
   public RequestParkingLotDto() {}
 
+  public RequestParkingLotDto(@NotBlank String name, @NotBlank String cnpj, @NotBlank String address,
+      @NotBlank String phone, @NotNull Integer spacesMoto, @NotNull Integer spaceCars) {
+    super();
+    this.name = name;
+    this.cnpj = cnpj;
+    this.address = address;
+    this.phone = phone;
+    this.spacesMoto = spacesMoto;
+    this.spaceCars = spaceCars;
+  }
+
+
+
   public String getName() {
     return name;
   }

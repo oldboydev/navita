@@ -9,5 +9,6 @@ import dev.oldboy.navita.parking.vehicle.models.Vehicle;
 public interface VehiclesRepository extends JpaRepository<Vehicle, Long> {
 
   Optional<Vehicle> findByPlate(String plate);
-
+  
+  void deleteByPlate(String plate);
 }

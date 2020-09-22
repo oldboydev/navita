@@ -27,7 +27,7 @@ public class ParkingLotServiceImpl implements ParkingLotService {
     List<ParkingLot> parkingLots = repository.findAll();
     
     if(parkingLots.size() == 0) {
-      throw new RuntimeException("There is no parkingLots recorded");
+      throw new ParkingLotNotFoundException("There is no parkingLots recorded");
     }
     
     return parkingLots;

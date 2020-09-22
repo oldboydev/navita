@@ -17,7 +17,7 @@ public class ManagerServiceImpl implements ManagerService {
   private ManagerRepository repository;
   
   @Override
-  public void addManager(ParkingLot parkingLot) {
+  public Boolean addManager(ParkingLot parkingLot) {
     Manager manager = new Manager();
     manager.setIdParkingLot(parkingLot.getId());
     manager.setSpacesMoto(parkingLot.getSpacesMoto());
@@ -31,10 +31,12 @@ public class ManagerServiceImpl implements ManagerService {
       repository.saveAndFlush(manager);
     } catch (Exception e) {
       e.printStackTrace();
-    }    
+    }  
+    
+    return true;
   }
   
-  public void deleteManager(ParkingLot parkingLot) {
+  public Boolean deleteManager(ParkingLot parkingLot) {
     Optional<Manager> foundManager = repository.findByIdParkingLot(parkingLot.getId());
     
     if(foundManager.isPresent()) {
@@ -42,6 +44,8 @@ public class ManagerServiceImpl implements ManagerService {
       
       repository.delete(manager);
     }
+    
+    return true;
   }
   
   /**
@@ -53,7 +57,7 @@ public class ManagerServiceImpl implements ManagerService {
    * @param updateParkingLot
    */
   @Override
-  public void verifyIfCanUpdateSpaces(ParkingLot updateParkingLot) {
+  public Boolean verifyIfCanUpdateSpaces(ParkingLot updateParkingLot) {
     Optional<Manager> foundManager = repository.findByIdParkingLot(updateParkingLot.getId());
     
     if(foundManager.isPresent()) {
@@ -69,8 +73,10 @@ public class ManagerServiceImpl implements ManagerService {
         throw new IllegalArgumentException(
             "It's not possible to downgrade total spaces for cars because there is no empty spaces!"
         );
-      }
+      }      
     }
+    
+    return true;
   }
   
   /**
@@ -81,7 +87,7 @@ public class ManagerServiceImpl implements ManagerService {
    * @param deleteParkingLot
    */
   @Override
-  public void verifyIfCanDeleteParkingLot(ParkingLot deleteParkingLot) {
+  public Boolean verifyIfCanDeleteParkingLot(ParkingLot deleteParkingLot) {
     Optional<Manager> foundManager = repository.findByIdParkingLot(deleteParkingLot.getId());
     
     if(foundManager.isPresent()) {
@@ -101,6 +107,8 @@ public class ManagerServiceImpl implements ManagerService {
         throw new IllegalArgumentException(msg);            
       }
     }
+    
+    return true;
   }
 
 }
