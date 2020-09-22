@@ -11,4 +11,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long> {
 
   Optional<ParkingLot> findByCnpj(String cnpj);
 
+  void deleteByCnpj(String cnpj);
+
 }
